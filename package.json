@@ -1,0 +1,25 @@
+{
+  "name": "movie-madness",
+  "version": "1.0.0",
+  "description": "Simple App to play with movie data",
+  "main": "index.js",
+  "scripts": {
+    "test": "node_modules/mocha/bin/mocha index.test.js",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prickprat/movie-madness.git"
+  },
+  "author": "rattlesnake",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/prickprat/movie-madness/issues"
+  },
+  "homepage": "https://github.com/prickprat/movie-madness#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
+    "supertest": "^3.0.0"
+  }
+}
