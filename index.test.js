@@ -40,8 +40,20 @@ describe('Movie Madness API', () => {
 
     describe('6 Degrees of Kevin Bacon', () => {
         it.skip('should provide the number of degrees of movie-separation for two given actors', () => {
-            let actor1 = '';
-            let actor2 = '';
+            let actor1 = 'Matt Damon';
+            let actor2 = 'Bruce Willis';
+
+            let expected = [{
+                cast: "Jonathan Aris"
+                title: "The Martian"
+            },{
+                cast: "Alexander Radzinski",
+                title: "The Jackal",
+            },{
+                cast: "Bruce Willis"
+                title: "The Jackal"
+            }];
+
 
             //Get acted-in :: https://api.themoviedb.org/3/person/6384/movie_credits
             //Get cast-of -- https://api.themoviedb.org/3/movie/561/credits
