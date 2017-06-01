@@ -5,90 +5,33 @@ const request = require('supertest');
 
 const app = require('./index');
 
-describe('Movie Madness API', () => {
-    describe('Searching Movies', () => {
-        it('should return json and error for empty query', () => {
+describe('API System Tests :: ', () => {
+    describe('Searching for actor', () => {
+
+        it('should return json details for Kevin Bacon', () => {
             return request(app)
-                .get('/movie/search')
-                .set('Accept', 'application/json')
+                .get('/actor/search/kevin%20bacon')
                 .expect('Content-Type', /json/)
-                .expect(400);
+                .expect(200)
+                .then(res => {
+                    res.body.id.should.equal('4724');
+                    res.body.name.should.equal('Kevin Bacon');
+                })
         }).timeout(5000);
-
-        it('should search by partial match string and return the first movie by default', () => {
-            return request(app)
-                .get('/movie/search?query=hunting')
-                .expect(200)
-                .then(res => {
-                    movie = res.body
-                    movie.id.should.equal(489);
-                    movie.original_title.should.match(/hunting/i);
-                });
-        }).timeout(5000);
-
-        it.skip('should be able to return up to a specified number of search results', () => {
-            let numMovies = 50;
-            return request(app)
-                .get(`/movie/search?date=2000&num_results=${numMovies}`)
-                .expect(200)
-                .then(res => {
-                    movies = res.body;
-                    movies.length.should.equal(numMovies);
-                });
-        });
-    });
-
-    describe('6 Degrees of Kevin Bacon', () => {
-        it.skip('should provide the number of degrees of movie-separation for two given actors', () => {
-            let actor1 = 'Matt Damon';
-            let actor2 = 'Bruce Willis';
-
-            let expected = [{
-                cast: "Jonathan Aris"
-                title: "The Martian"
-            },{
-                cast: "Alexander Radzinski",
-                title: "The Jackal",
-            },{
-                cast: "Bruce Willis"
-                title: "The Jackal"
-            }];
-
-
-            //Get acted-in :: https://api.themoviedb.org/3/person/6384/movie_credits
-            //Get cast-of -- https://api.themoviedb.org/3/movie/561/credits
-
-
-            return request(app)
-                .get(`/complex/6deg?actor1=${actor1}&actor2=${actor2}`)
-                .expect(200)
-                .then(res => {
-                    results = res.body;
-                    results.degrees.should.equal();
-
-                });
-        });
 
     });
 
-    describe('Movie Details', () => {
-        it('should error if id is not an integer', (done) => {
-            request(app)
-                .get('/movie/id/hehehe')
+    describe('Get movie credits', () => {
+        it('should return json movie credits for actor id 4724', () => {
+            return request(app)
+                .get('/actor/4724/movies')
                 .expect('Content-Type', /json/)
-                .expect(404, done);
-        });
-
-        it('should return the right movie for an id', () => {
-            return request(app)
-               .get('/movie/id/1262')
-               .expect('Content-Type', /json/)
-               .expect(200)
-               .then(res => {
-                    res.body.id.should.equal(1262);
-                    res.body.original_title.should.match(/stranger than fiction/i);
-               });
+                .expect(200)
+                .then(res => {
+                    let result = res.body.results[0];
+                    result.name.should.equal('Kevin Bacon');
+                    result.id.should.equal('4724');
+                })
         }).timeout(5000);
-
-    });
+    })
 });
